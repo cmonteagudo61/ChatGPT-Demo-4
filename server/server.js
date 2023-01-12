@@ -7,11 +7,19 @@ dotenv.config();
 
 console.log(process.env.OPENAI_API_KEY)
 
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-});
+const { Configuration, OpenAIApi } = require("openai");
 
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 const openai = new OpenAIApi(configuration);
+
+
+//const configuration = new Configuration({
+//    apiKey: process.env.OPENAI_API_KEY,
+//});
+
+//const openai = new OpenAIApi(configuration);
 
 const app = express();
 app.use(cors());
@@ -25,16 +33,26 @@ app.get('/', async (req, res) => {
 
 app.post('/', async (req, res) => {
    try {
-      const prompt = req.body.prompt;
+      //const prompt = req.body.prompt;
+
+      //const response = await openai.createCompletion({
+       // model: "text-davinci-003",
+       // prompt: `${prompt}`,
+       // temperature: 0,
+       // max_tokens: 3000,
+       // top_p: 1,
+        //frequency_penalty: 0.5,
+        //presence_penalty: 0,
+      //});
 
       const response = await openai.createCompletion({
         model: "text-davinci-003",
-        prompt: `${prompt}`,
+        prompt: "Convert my short hand into a first-hand account of the meeting:\n\nTom: Profits up 50%\nJane: New servers are online\nKjel: Need more time to fix software\nJane: Happy to help\nParkman: Beta testing almost done",
         temperature: 0,
-        max_tokens: 3000,
-        top_p: 1,
-        frequency_penalty: 0.5,
-        presence_penalty: 0,
+        max_tokens: 64,
+        top_p: 1.0,
+        frequency_penalty: 0.0,
+        presence_penalty: 0.0,
       });
 
       res.status(200).send({
